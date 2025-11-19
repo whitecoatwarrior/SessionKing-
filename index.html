@@ -1,0 +1,3840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedPlex Academy Quiz Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a56db;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --light: #f8fafc;
+            --dark: #1e3a8a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --background: #f0f9ff;
+            --card-bg: #ffffff;
+            --text-primary: #1e3a8a;
+            --text-secondary: #4b5563;
+            --border-radius: 5px;
+            --shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+            --compact-spacing: 3px;
+        }
+
+        .dark-mode {
+            --primary: #3b82f6;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --light: #1e293b;
+            --dark: #f1f5f9;
+            --background: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            font-size: 8.1px;
+            line-height: 1.1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4.86px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 6.48px;
+            border-radius: var(--border-radius);
+            margin-bottom: 6.48px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            animation: pulse 15s infinite linear;
+        }
+
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 4.32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo h1 {
+            font-size: 0.972rem;
+            font-weight: 800;
+            margin-bottom: 1.62px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo p {
+            font-weight: 500;
+            font-size: 0.486rem;
+            opacity: 0.9;
+        }
+
+        .header-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-content h1 {
+            font-size: 0.648rem;
+            margin-bottom: 4.32px;
+            color: #ffd700;
+        }
+
+        .header-content p {
+            font-size: 0.486rem;
+            line-height: 1.1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 15.12px;
+            height: 15.12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            position: absolute;
+            top: 6.48px;
+            right: 6.48px;
+            z-index: 10;
+        }
+
+        .menu-toggle span {
+            width: 15.12px;
+            height: 1.62px;
+            background: white;
+            border-radius: 1.62px;
+            transition: var(--transition);
+            position: relative;
+            transform-origin: center;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(3.24px, 3.24px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(4.32px, -4.32px);
+        }
+
+        /* Navigation Styles */
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 6.48px;
+            position: relative;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4.86px;
+        }
+
+        .nav-header h2 {
+            font-size: 0.729rem;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: none;
+            width: 25.92px;
+            height: 12.96px;
+            border-radius: 12.96px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 1.62px;
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle span {
+            width: 9.72px;
+            height: 9.72px;
+            border-radius: 50%;
+            background: var(--primary);
+            position: absolute;
+            transition: var(--transition);
+            left: 1.62px;
+        }
+
+        .theme-toggle.dark span {
+            left: calc(100% - 11.34px);
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 2.43px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 2.43px;
+            padding: 4.05px 4.86px;
+            background: var(--card-bg);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.486rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 4.86px;
+            box-shadow: var(--shadow);
+            margin-bottom: 6.48px;
+            transition: var(--transition);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4.86px;
+            padding-bottom: 4.05px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 2.43px;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 2.43px;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.43px;
+            padding: 2.43px 4.86px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.486rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #0da271;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #0da271;
+            transform: translateY(-1px);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 4.86px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 4.86px;
+        }
+
+        .card:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 2.43px 6.48px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 2.43px;
+            margin-bottom: 4.05px;
+            padding-bottom: 4.05px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 0.567rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            gap: 4.86px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 9.72px 0;
+            margin-top: auto;
+            font-size: 0.486rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 6.48px;
+            margin-top: 6.48px;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6.48px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-6.48px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Quiz Cards */
+        .quiz-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .quiz-info {
+            flex-grow: 1;
+            margin-bottom: 4.86px;
+        }
+
+        .quiz-id {
+            font-weight: 700;
+            font-size: 0.567rem;
+            color: var(--primary);
+            margin-bottom: 1.62px;
+        }
+
+        .quiz-subject {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.43px;
+        }
+
+        .quiz-chapter {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.43px;
+            font-weight: 600;
+        }
+
+        .quiz-details {
+            font-size: 0.405rem;
+            color: var(--text-secondary);
+            margin-bottom: 4.05px;
+        }
+
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 4.05px 6.48px;
+            font-weight: 600;
+            font-size: 0.486rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .start-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        /* Stats Panel */
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(64.8px, 1fr));
+            gap: 4.05px;
+            margin-bottom: 4.86px;
+        }
+
+        .stat-item {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 4.05px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 0.729rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.405rem;
+            color: var(--text-secondary);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Welcome Animation - Enhanced */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1e3a8a, #1a56db);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+            padding: 12.15px;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9.72px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4.86px 16.2px rgba(0, 0, 0, 0.2);
+        }
+
+        .welcome-content h2 {
+            font-size: 1.458rem;
+            margin-bottom: 9.72px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 2.5s infinite;
+        }
+
+        .welcome-content p {
+            font-size: 0.648rem;
+            margin-bottom: 12.15px;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .welcome-logo {
+            font-size: 2.025rem;
+            margin-bottom: 12.15px;
+            color: #ffd700;
+            text-shadow: 0 0 12.15px rgba(255, 215, 0, 0.5);
+            animation: pulseWelcome 1.5s infinite;
+        }
+
+        @keyframes pulseWelcome {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Password Modal */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .password-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .password-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4.05px 12.15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-16.2px);
+            transition: transform 0.3s ease;
+        }
+
+        .password-modal.active .password-content {
+            transform: translateY(0);
+        }
+
+        .password-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6.48px;
+            padding-bottom: 4.86px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .password-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 0.729rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 4.86px;
+        }
+
+        .form-group {
+            margin-bottom: 4.86px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 1.62px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.486rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 4.05px 4.86px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 0.486rem;
+            background: var(--light);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1.62px rgba(26, 86, 219, 0.2);
+        }
+
+        .password-hint {
+            font-size: 0.405rem;
+            color: var(--text-secondary);
+            margin-top: 2.43px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.486rem;
+            margin-top: 3.24px;
+            display: none;
+        }
+
+        /* Password List Styles */
+        .password-list {
+            margin-top: 6.48px;
+        }
+
+        .password-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.486rem;
+        }
+
+        .password-table th, .password-table td {
+            border: 1px solid #ddd;
+            padding: 4.05px;
+            text-align: left;
+        }
+
+        .password-table th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .password-table tr:nth-child(even) {
+            background: var(--light);
+        }
+
+        /* Homepage Content Styles */
+        .homepage-content {
+            line-height: 1.4;
+        }
+
+        .homepage-section {
+            margin-bottom: 6.48px;
+        }
+
+        .homepage-section h3 {
+            font-size: 0.729rem;
+            color: var(--primary);
+            margin-bottom: 4.05px;
+        }
+
+        .homepage-section p {
+            font-size: 0.567rem;
+            margin-bottom: 4.05px;
+        }
+
+        .syllabus-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 4.86px 0;
+            font-size: 0.567rem;
+        }
+
+        .syllabus-table th, .syllabus-table td {
+            border: 1px solid #ddd;
+            padding: 4.05px;
+            text-align: left;
+        }
+
+        .syllabus-table th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .services-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .services-list li {
+            font-size: 0.567rem;
+            margin-bottom: 2.43px;
+            display: flex;
+            align-items: center;
+            gap: 4.05px;
+        }
+
+        .services-list li i {
+            color: var(--accent);
+        }
+
+        /* Contact Button */
+        .contact-developer {
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 4.05px 6.48px;
+            font-weight: 600;
+            font-size: 0.486rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 6.48px;
+        }
+
+        .contact-developer:hover {
+            background: #0da271;
+            transform: translateY(-1px);
+        }
+
+        .contact-developer i {
+            margin-right: 2.43px;
+        }
+
+        /* Developer Info Section */
+        .developer-info {
+            margin-top: 9.72px;
+            padding-top: 6.48px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Quiz Access Section */
+        .quiz-access-info {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            margin-top: 9.72px;
+            border-left: 4.05px solid var(--accent);
+        }
+
+        /* Session Promotion Section Styles */
+        .session-promotion {
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            margin-bottom: 9.72px;
+            border-left: 4.05px solid var(--primary);
+        }
+
+        .session-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 9.72px;
+            margin-top: 6.48px;
+        }
+
+        .session-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 6.48px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .session-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3.24px 9.72px rgba(0, 0, 0, 0.1);
+        }
+
+        .session-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4.86px;
+        }
+
+        .session-icon {
+            width: 48.6px;
+            height: 64.8px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3.24px;
+            margin-right: 6.48px;
+            box-shadow: 0 2.43px 4.86px rgba(0, 0, 0, 0.1);
+            font-size: 1.62rem;
+        }
+
+        .session-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.62px;
+        }
+
+        .session-price {
+            font-size: 0.567rem;
+            margin-bottom: 1.62px;
+        }
+
+        .session-features {
+            margin-top: 4.86px;
+        }
+
+        .session-features ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .session-features li {
+            font-size: 0.486rem;
+            margin-bottom: 1.62px;
+            display: flex;
+            align-items: flex-start;
+            gap: 4.05px;
+        }
+
+        .session-features li i {
+            color: var(--success);
+            margin-top: 0.81px;
+        }
+
+        .bundle-offer {
+            background: linear-gradient(135deg, #fff3e0, #ffcc80);
+            border-radius: var(--border-radius);
+            padding: 6.48px;
+            margin-top: 6.48px;
+            text-align: center;
+            border: 1px dashed var(--warning);
+        }
+
+        .bundle-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--warning);
+            margin-bottom: 3.24px;
+        }
+
+        .bundle-price {
+            font-size: 0.567rem;
+        }
+
+        .bundle-savings {
+            font-size: 0.486rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-top: 1.62px;
+        }
+
+        /* Session Registration Form Styles */
+        .session-registration-form {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 6.48px;
+        }
+
+        .form-body {
+            padding: 9.72px;
+        }
+
+        .form-section {
+            margin-bottom: 12.15px;
+            padding-bottom: 9.72px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 4.05px;
+            margin-bottom: 6.48px;
+            color: var(--secondary);
+            font-size: 0.648rem;
+        }
+
+        .section-icon {
+            background: var(--primary);
+            color: white;
+            width: 16.2px;
+            height: 16.2px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.486rem;
+        }
+
+        .form-group {
+            margin-bottom: 6.48px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 2.43px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.486rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 4.05px;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            font-size: 0.486rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 1.62px rgba(67, 97, 238, 0.2);
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6.48px;
+            margin-top: 4.05px;
+        }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 2.43px;
+            cursor: pointer;
+            font-size: 0.486rem;
+        }
+
+        .radio-option input, .checkbox-option input {
+            width: 9.72px;
+            height: 9.72px;
+        }
+
+        .session-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 6.48px;
+            margin-top: 6.48px;
+        }
+
+        .session-option {
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 6.48px;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .session-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-1.62px);
+            box-shadow: var(--shadow);
+        }
+
+        .session-option.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .session-option .session-title {
+            font-weight: 700;
+            font-size: 0.567rem;
+            margin-bottom: 4.05px;
+            color: var(--secondary);
+        }
+
+        .session-option .session-price {
+            font-size: 0.486rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .form-submit-btn {
+            display: block;
+            width: 100%;
+            padding: 6.48px 12.15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.486rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            margin-top: 9.72px;
+        }
+
+        .form-submit-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: 0 1.62px 4.86px rgba(0, 0, 0, 0.1);
+        }
+
+        .confirmation-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 4.05px;
+            margin: 9.72px 0;
+            font-size: 0.486rem;
+        }
+
+        .confirmation-checkbox input {
+            width: 9.72px;
+            height: 9.72px;
+        }
+
+        .payment-info {
+            background: #f8f9fa;
+            padding: 6.48px;
+            border-radius: var(--border-radius);
+            margin: 6.48px 0;
+            font-size: 0.486rem;
+        }
+
+        .payment-info p {
+            margin-bottom: 2.43px;
+        }
+
+        /* About Us Enhanced Styles */
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 9.72px;
+            margin-top: 9.72px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3.24px 9.72px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 1.62rem;
+            color: var(--primary);
+            margin-bottom: 6.48px;
+        }
+
+        .feature-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4.05px;
+        }
+
+        .feature-description {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+        }
+
+        /* Contact Us Enhanced Styles */
+        .contact-team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 12.15px;
+        }
+
+        .team-head {
+            text-align: center;
+            margin-bottom: 9.72px;
+        }
+
+        .head-image {
+            width: 97.2px;
+            height: 97.2px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3.24px solid var(--primary);
+            margin-bottom: 6.48px;
+            box-shadow: 0 3.24px 9.72px rgba(0, 0, 0, 0.2);
+        }
+
+        .head-name {
+            font-size: 0.729rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.62px;
+        }
+
+        .head-title {
+            font-size: 0.567rem;
+            color: var(--text-secondary);
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 9.72px;
+            margin-top: 9.72px;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .member-image {
+            width: 64.8px;
+            height: 64.8px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2.43px solid var(--secondary);
+            margin-bottom: 3.24px;
+            box-shadow: 0 2.43px 6.48px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-name {
+            font-size: 0.486rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Dr. Hamad Section */
+        .dr-hamad-section {
+            display: flex;
+            align-items: center;
+            gap: 9.72px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            margin-bottom: 9.72px;
+        }
+
+        .dr-hamad-image {
+            width: 97.2px;
+            height: 97.2px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3.24px solid var(--primary);
+            box-shadow: 0 3.24px 9.72px rgba(0, 0, 0, 0.2);
+        }
+
+        .dr-hamad-info {
+            flex: 1;
+        }
+
+        .dr-hamad-name {
+            font-size: 0.729rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 3.24px;
+        }
+
+        .dr-hamad-title {
+            font-size: 0.567rem;
+            color: var(--text-secondary);
+            margin-bottom: 4.05px;
+        }
+
+        .dr-hamad-description {
+            font-size: 0.486rem;
+            color: var(--text-primary);
+        }
+
+        /* FAQ Styles */
+        .faq-container {
+            margin-top: 9.72px;
+        }
+
+        .faq-item {
+            margin-bottom: 6.48px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 6.48px 9.72px;
+            background: var(--light);
+            font-weight: 600;
+            font-size: 0.567rem;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 6.48px 9.72px;
+            font-size: 0.486rem;
+            background: var(--card-bg);
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* Student Success Styles */
+        .student-success-section {
+            background: linear-gradient(135deg, #f0f4ff, #e6eeff);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            margin-bottom: 9.72px;
+            border-left: 4.05px solid var(--success);
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 6.48px;
+            margin-top: 6.48px;
+        }
+
+        .student-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 6.48px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2.43px 6.48px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-avatar {
+            width: 48.6px;
+            height: 48.6px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 3.24px;
+            font-size: 1.215rem;
+        }
+
+        .student-name {
+            font-weight: 700;
+            font-size: 0.486rem;
+            color: var(--primary);
+            margin-bottom: 1.62px;
+        }
+
+        .student-score {
+            font-size: 0.405rem;
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 1.62px;
+        }
+
+        .student-instructor {
+            font-size: 0.405rem;
+            color: var(--text-secondary);
+        }
+
+        /* Service Details Styles */
+        .service-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 9.72px;
+            margin-top: 9.72px;
+        }
+
+        .service-detail-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .service-detail-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3.24px 9.72px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 1.62rem;
+            color: var(--primary);
+            margin-bottom: 6.48px;
+        }
+
+        .service-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4.05px;
+        }
+
+        .service-description {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+            margin-bottom: 4.05px;
+        }
+
+        .service-importance {
+            font-size: 0.486rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Homepage Feature Cards */
+        .homepage-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 6.48px;
+            margin-top: 6.48px;
+        }
+
+        .homepage-feature-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 9.72px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .homepage-feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3.24px 9.72px rgba(0, 0, 0, 0.1);
+        }
+
+        .homepage-feature-header {
+            display: flex;
+            align-items: center;
+            gap: 6.48px;
+            margin-bottom: 6.48px;
+        }
+
+        .homepage-feature-icon {
+            width: 32.4px;
+            height: 32.4px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.215rem;
+            flex-shrink: 0;
+        }
+
+        .homepage-feature-title {
+            font-size: 0.648rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .homepage-feature-description {
+            font-size: 0.486rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Registration Notifications */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 12.15px;
+            box-shadow: 0 6.48px 16.2px rgba(0, 0, 0, 0.2);
+            z-index: 10001;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .notification.active {
+            display: flex;
+        }
+
+        .notification-icon {
+            font-size: 3.24rem;
+            margin-bottom: 6.48px;
+        }
+
+        .notification-success .notification-icon {
+            color: var(--success);
+        }
+
+        .notification-error .notification-icon {
+            color: #dc3545;
+        }
+
+        .notification h3 {
+            font-size: 0.729rem;
+            margin-bottom: 4.86px;
+        }
+
+        .notification p {
+            font-size: 0.486rem;
+            margin-bottom: 6.48px;
+        }
+
+        .notification-close {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 4.05px 9.72px;
+            font-size: 0.486rem;
+            cursor: pointer;
+        }
+
+        .notification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+        }
+
+        .notification-overlay.active {
+            display: block;
+        }
+
+        /* Registration Form Status Message */
+        #status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .grid-3 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .main-nav {
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                box-shadow: var(--shadow);
+                padding: 4.86px;
+                z-index: 100;
+                width: 129.6px;
+                display: none;
+            }
+            
+            .main-nav.active {
+                display: flex;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .dr-hamad-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 4.05px;
+            }
+            
+            header {
+                padding: 4.86px;
+            }
+            
+            .logo h1 {
+                font-size: 0.81rem;
+            }
+            
+            .panel {
+                padding: 4.86px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 2.43px;
+            }
+            
+            .panel-actions {
+                flex-direction: column;
+            }
+            
+            .welcome-content {
+                padding: 9.72px;
+                margin: 6.48px;
+            }
+            
+            .welcome-content h2 {
+                font-size: 1.053rem;
+            }
+            
+            .welcome-content p {
+                font-size: 0.567rem;
+            }
+            
+            .welcome-logo {
+                font-size: 1.62rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 3.24px;
+            }
+
+            .session-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 3.24px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 1.62px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Animation -->
+    <div class="welcome-overlay" id="welcome-overlay">
+        <div class="welcome-content scale-in">
+            <div class="welcome-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2>Welcome to MedPlex Academy Quiz Portal</h2>
+            <p>Access all your quizzes in one place. Organized by subject for easy navigation.</p>
+            <button class="btn btn-primary" id="start-btn" style="padding: 4.86px 9.72px; font-size: 0.648rem;">
+                Get Started <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-content">
+            <div class="password-header">
+                <h3 class="password-title">Enter Quiz Password</h3>
+                <button class="close-modal" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="password-form">
+                <div class="form-group">
+                    <label for="quiz-password">Password</label>
+                    <input type="password" id="quiz-password" placeholder="Enter the Quiz Password">
+                    <div class="password-hint">Enter the exact password for this quiz</div>
+                    <div class="error-message" id="password-error">Incorrect password. Please try again.</div>
+                </div>
+                <button class="btn btn-primary" id="submit-password">
+                    <i class="fas fa-lock-open"></i> Access Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Notifications -->
+    <div class="notification-overlay" id="notification-overlay"></div>
+    
+    <div class="notification notification-success" id="success-notification">
+        <div class="notification-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Registration Successful!</h3>
+        <p>Your registration has been received and we will contact you soon.</p>
+        <button class="notification-close" id="success-close">OK</button>
+    </div>
+    
+    <div class="notification notification-error" id="error-notification">
+        <div class="notification-icon">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <h3>Registration Failed</h3>
+        <p>Please check your information and try again.</p>
+        <button class="notification-close" id="error-close">OK</button>
+    </div>
+
+    <div class="container">
+        <header>
+            <button class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="logo">
+                <h1>MedPlex Academy Quiz Portal</h1>
+                <p>Access All Your Quizzes in One Place</p>
+            </div>
+            
+            <div class="header-content">
+                <h1>Organized by Subject for Easy Navigation</h1>
+                <p>Browse, filter, and access all your quizzes with password protection</p>
+            </div>
+        </header>
+
+        <div class="nav-container">
+            <div class="nav-header">
+                <h2>Navigation</h2>
+                <button class="theme-toggle" id="theme-toggle">
+                    <span></span>
+                </button>
+            </div>
+            
+            <div class="main-nav" id="main-nav">
+                <button class="nav-btn active" data-tab="home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </button>
+                <button class="nav-btn" data-tab="all">
+                    <i class="fas fa-globe"></i>
+                    <span>All Quiz List</span>
+                </button>
+                <button class="nav-btn" data-tab="chemistry">
+                    <i class="fas fa-flask"></i>
+                    <span>Chemistry Quiz List</span>
+                </button>
+                <button class="nav-btn" data-tab="biology">
+                    <i class="fas fa-dna"></i>
+                    <span>Biology Quiz List</span>
+                </button>
+                <button class="nav-btn" data-tab="physics">
+                    <i class="fas fa-atom"></i>
+                    <span>Physics Quiz List</span>
+                </button>
+                <button class="nav-btn" data-tab="english">
+                    <i class="fas fa-language"></i>
+                    <span>English Quiz List</span>
+                </button>
+                <button class="nav-btn" data-tab="logical">
+                    <i class="fas fa-brain"></i>
+                    <span>Logical Reasoning Quiz List</span>
+                </button>
+                <button class="nav-btn" data-tab="session">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Register a Session</span>
+                </button>
+                <button class="nav-btn" data-tab="password">
+                    <i class="fas fa-key"></i>
+                    <span>Password Tabs</span>
+                </button>
+                <button class="nav-btn" data-tab="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About Us</span>
+                </button>
+                <button class="nav-btn" data-tab="contact">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Us</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Panel - Removed Total Quizzes -->
+        <div class="stats-panel">
+            <div class="stat-item">
+                <div class="stat-value" id="chemistry-quizzes">0</div>
+                <div class="stat-label">Chemistry</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="biology-quizzes">0</div>
+                <div class="stat-label">Biology</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="physics-quizzes">0</div>
+                <div class="stat-label">Physics</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="english-quizzes">0</div>
+                <div class="stat-label">English</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="logical-quizzes">0</div>
+                <div class="stat-label">Logical Reasoning</div>
+            </div>
+        </div>
+
+        <!-- Homepage Tab -->
+        <div class="tab-content active" id="home-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-home"></i> Homepage</h3>
+                </div>
+                
+                <div class="homepage-content">
+                    <!-- Dr. Hamad Section -->
+                    <div class="dr-hamad-section">
+                        <img src="https://i.ibb.co/7d5pVqSS/developer.jpg" alt="Dr. Hamad Ahmad" class="dr-hamad-image">
+                        <div class="dr-hamad-info">
+                            <div class="dr-hamad-name">Dr. Hamad Ahmad</div>
+                            <div class="dr-hamad-title">Head of MedPlex Academy</div>
+                            <div class="dr-hamad-description">
+                                Dr. Hamad Ahmad is the visionary leader and founder of MedPlex Academy, a dedicated platform for MDCAT preparation. With years of experience in medical education and a passion for teaching, he has helped thousands of students achieve their dreams of becoming doctors. Dr. Hamad's innovative teaching methods and comprehensive study materials have made MedPlex Academy one of the most trusted names in MDCAT preparation in Pakistan.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Session Promotion Section -->
+                    <div class="session-promotion">
+                        <h3>📚 Premium MDCAT Preparation Sessions</h3>
+                        <p>Enhance your MDCAT preparation with our specially designed sessions that cover the entire syllabus with precision and clarity.</p>
+                        
+                        <div class="session-grid">
+                            <div class="session-card">
+                                <div class="session-header">
+                                    <div class="session-icon">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    <div>
+                                        <div class="session-title">MedPlex I King Batch</div>
+                                        <div class="session-price">Price: Rs. 3,000</div>
+                                    </div>
+                                </div>
+                                <div class="session-features">
+                                    <ul>
+                                        <li><i class="fas fa-check"></i> Penta Day Test</li>
+                                        <li><i class="fas fa-check"></i> Comprehensive Notes</li>
+                                        <li><i class="fas fa-check"></i> Chapter-Wise Tests</li>
+                                        <li><i class="fas fa-check"></i> Topic-Wise Detailed Notes</li>
+                                        <li><i class="fas fa-check"></i> 5000+ Multi-Step Thinking MCQs</li>
+                                        <li><i class="fas fa-check"></i> Exceptional Cases & Mechanism Recalling</li>
+                                        <li><i class="fas fa-check"></i> All Past Papers & Expected MCQs</li>
+                                        <li><i class="fas fa-check"></i> 100 Chapter-Wise & Multi-Random Chapter MCQs</li>
+                                        <li><i class="fas fa-check"></i> 50 Full Syllabus Tests with Explanations</li>
+                                        <li><i class="fas fa-check"></i> English & Logical Reasoning Notes & Hack Tricks Tests</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="session-card">
+                                <div class="session-header">
+                                    <div class="session-icon">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    <div>
+                                        <div class="session-title">MedPlex II King Batch</div>
+                                        <div class="session-price">Price: Rs. 2,500</div>
+                                    </div>
+                                </div>
+                                <div class="session-features">
+                                    <ul>
+                                        <li><i class="fas fa-check"></i> 25 Full Syllabus Tests</li>
+                                        <li><i class="fas fa-check"></i> 50 Chapter-Wise Tests</li>
+                                        <li><i class="fas fa-check"></i> Topic-Wise Notes</li>
+                                        <li><i class="fas fa-check"></i> 2000+ Multi-Step Thinking MCQs</li>
+                                        <li><i class="fas fa-check"></i> PDF Notes</li>
+                                        <li><i class="fas fa-check"></i> English & Logical Reasoning MCQs Hack Tricks</li>
+                                        <li><i class="fas fa-check"></i> Notes of All Subjects for Learning</li>
+                                        <li><i class="fas fa-check"></i> Detailed Notes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bundle-offer">
+                            <div class="bundle-title">✨ Bundle Offer</div>
+                            <div class="bundle-price">
+                                <span class="original-price">Original Total: Rs. 5,500</span>
+                                <span class="discount-price">After Discount: Rs. 4,500</span>
+                            </div>
+                            <div class="bundle-savings">Save Rs. 1,000 with this special bundle!</div>
+                        </div>
+                        
+                        <p style="margin-top: 6.48px; text-align: center;">
+                            <button id="homepage-register-button" class="btn btn-primary" style="display: inline-block;">
+                                <i class="fas fa-user-graduate"></i> Register Now
+                            </button>
+                        </p>
+                    </div>
+
+                    <!-- Homepage Feature Cards -->
+                    <div class="homepage-section">
+                        <h3>MedPlex Academy — Your Gateway to MDCAT Excellence</h3>
+                        <p>Welcome to MedPlex Academy, a fully independent and self-developed MDCAT learning platform designed to deliver high-quality online preparation. Every note, test, and resource at MedPlex Academy is created by our own expert team, ensuring originality, accuracy, and alignment with the modern MDCAT pattern. Our goal is to provide students with a complete, structured, and powerful system that builds confidence, sharpens critical thinking, and leads to admission in top medical colleges. If you are aiming for excellence, MedPlex Academy is your home for success.</p>
+                        
+                        <div class="homepage-feature-grid">
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">Topic-Wise Tests</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    Our preparation begins with clarity. Topic-Wise Tests divide the syllabus into small, manageable parts, allowing students to master each concept before moving ahead. These focused tests help students identify weaknesses early, revise effectively, and build a strong foundation step by step.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-book-open"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">Chapter-Wise Tests</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    MedPlex Academy provides detailed Chapter-Wise Tests that ensure deep coverage of every chapter from our own structured curriculum. Each test follows the standard difficulty and style of MDCAT, offering students a realistic practice experience while strengthening their understanding of entire chapters.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">Book-Wise Tests (MedPlex Compiled Content)</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    Our Book-Wise Tests are built from MedPlex Academy's own compiled resources and question banks. We gather concepts from all major medical entrance content and rewrite, refine, and design them uniquely for our academy. This ensures students receive diverse, concept-rich practice without relying on any external academy.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">Complete Syllabus Tests</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    MedPlex Academy offers Complete Syllabus Tests designed to simulate the real MDCAT exam from start to finish. With full-length, strictly timed tests, students experience real exam pressure, improve time management, and learn to sustain focus throughout the exam duration.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">MedPlex Notes & Chapter Key Points</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    We take pride in our self-created notes, carefully prepared by our expert academic team. These notes simplify complex topics, explain concepts clearly, and offer chapter-wise key points for quick revision. MedPlex notes are designed to help students learn smarter and retain concepts more effectively.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">5000+ Critical Thinking MCQs</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    Our platform includes over 5000 original MCQs, crafted entirely by MedPlex Academy. Each question is designed with 3–4 step reasoning, helping students develop strong analytical thinking, logical deduction, and exam-level accuracy. These high-standard MCQs ensure deep preparation and build the mindset needed for MDCAT success.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-user-friends"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">Expert Mentors & Student Guidance</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    MedPlex Academy's own mentors provide complete academic guidance, motivation, and study strategies. They support students throughout the preparation journey with structured study plans, concept clearing, and performance analysis. Our mentors are dedicated to helping every student reach their full potential.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-desktop"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">Real-Exam Test Simulations</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    We offer Test Simulations that perfectly imitate MDCAT conditions. With real-time format, timed attempts, scoring analysis, and exam-like pressure, these simulations prepare students mentally and physically for the actual test day. Students learn how to manage stress, eliminate mistakes, and think critically under time constraints.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">MedPlex MDCAT Preparation Session</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    All our content, tests, notes, and guidance come together in our Premium MDCAT Session, designed for students who want structured, consistent, and result-oriented preparation. The session includes lectures, daily practice, topic-wise and chapter-wise tests, weekly evaluations, advanced MCQs, notes, live guidance, and complete syllabus coverage. This is the most powerful way to prepare with MedPlex Academy.
+                                </div>
+                            </div>
+                            
+                            <div class="homepage-feature-card">
+                                <div class="homepage-feature-header">
+                                    <div class="homepage-feature-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="homepage-feature-title">Join MedPlex Academy Today</div>
+                                </div>
+                                <div class="homepage-feature-description">
+                                    MedPlex Academy provides everything you need to excel — original notes, deep-thinking MCQs, professional tests, and expert mentoring. If you want to secure admission in medical college with confidence, enroll in our MDCAT Session today. Your journey to becoming a future doctor begins here.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Student Success Section -->
+                    <div class="student-success-section">
+                        <h3>🎉 Our Students' Outstanding Results</h3>
+                        <p>The following students achieved excellent marks in MDCAT using our resources, proving the effectiveness of our study materials:</p>
+                        
+                        <h4 style="margin-top: 9.72px; color: var(--primary);">MDCAT 2024 Results</h4>
+                        <div class="student-grid">
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Areeba Noor</div>
+                                <div class="student-score">194/200</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Kainat Abdullah</div>
+                                <div class="student-score">188/200</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Mirza Fiaz Baig</div>
+                                <div class="student-score">191/200</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Alla liaz</div>
+                                <div class="student-score">190/200</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Faisal Javeed</div>
+                                <div class="student-score">194/200</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Jahanzaib liagat</div>
+                                <div class="student-score">193/200</div>
+                            </div>
+                        </div>
+                        
+                        <h4 style="margin-top: 9.72px; color: var(--primary);">MDCAT 2025 Results</h4>
+                        <div class="student-grid">
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">M. Akmal Ghufran</div>
+                                <div class="student-score">175/200</div>
+                                <div class="student-instructor">Aggregate: 97.22%</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Taha Sohail</div>
+                                <div class="student-score">173/200</div>
+                                <div class="student-instructor">Aggregate: 96.11%</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Igra Farooq</div>
+                                <div class="student-score">171/200</div>
+                                <div class="student-instructor">Aggregate: 95%+</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Tahreem Karamat</div>
+                                <div class="student-score">165/200</div>
+                                <div class="student-instructor">Aggregate: 91.66%+</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">M. Basit Ahmed</div>
+                                <div class="student-score">172/200</div>
+                                <div class="student-instructor">Aggregate: 95.56%+</div>
+                            </div>
+                            <div class="student-card">
+                                <div class="student-avatar">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="student-name">Marwa Riaz</div>
+                                <div class="student-score">170/200</div>
+                                <div class="student-instructor">Aggregate: 95.18%+</div>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 9.72px; text-align: center; font-weight: 600; color: var(--success);">
+                            Join our successful students and achieve your dream of becoming a doctor with our proven study materials!
+                        </p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>About MedPlex Academy</h3>
+                        <p>MedPlex Academy is a dedicated group of doctors from Pakistan committed to educating and guiding medical students to successfully pass the MDCAT examination and secure admission into MBBS programs. Our mission is to provide comprehensive educational resources, strategic guidance, and personalized support to help aspiring medical students achieve their dreams of becoming healthcare professionals.</p>
+                        <p>Founded by a team of experienced medical professionals, MedPlex Academy understands the challenges faced by MDCAT aspirants. We provide a comprehensive learning ecosystem that includes detailed study materials, regular assessments, personalized feedback, and a supportive community to ensure our students are well-prepared for the MDCAT examination.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>MDCAT 2025: Your Gateway to Medical Education</h3>
+                        <p>The Medical and Dental College Admission Test (MDCAT) is a standardized entrance examination required for admission to medical and dental colleges in Pakistan. The test evaluates candidates' knowledge in key subjects essential for medical education.</p>
+                        <p>MDCAT 2025 is expected to be more competitive than ever, with thousands of students competing for limited seats in medical colleges. Our comprehensive preparation program is designed to give you the competitive edge needed to secure your place in a reputable medical institution.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>MDCAT 2025 Syllabus Details</h3>
+                        <p>The MDCAT 2025 examination consists of 180 multiple-choice questions distributed across different subjects as follows:</p>
+                        
+                        <table class="syllabus-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Number of Questions</th>
+                                    <th>Weightage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Biology</td>
+                                    <td>81 MCQs</td>
+                                    <td>45%</td>
+                                </tr>
+                                <tr>
+                                    <td>Chemistry</td>
+                                    <td>45 MCQs</td>
+                                    <td>25%</td>
+                                </tr>
+                                <tr>
+                                    <td>Physics</td>
+                                    <td>36 MCQs</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>English</td>
+                                    <td>9 MCQs</td>
+                                    <td>5%</td>
+                                </tr>
+                                <tr>
+                                    <td>Logical Reasoning</td>
+                                    <td>9 MCQs</td>
+                                    <td>5%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Important Note:</strong> The MDCAT is a computer-based test with a total duration of 3.5 hours. Negative marking may apply for incorrect answers, so strategic preparation is essential.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Our Comprehensive Study Materials - Detailed Overview</h3>
+                        <p>We provide a wide range of educational resources to help you prepare effectively for the MDCAT. Each service is designed with specific learning objectives and benefits:</p>
+                        
+                        <div class="service-details-grid">
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="service-title">Weekly Test Series</div>
+                                <div class="service-description">Regular assessments designed to track your progress systematically and identify areas for improvement.</div>
+                                <div class="service-importance">Importance: Builds exam temperament and helps in consistent practice.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="service-title">Comprehensive Study Notes</div>
+                                <div class="service-description">Detailed subject-wise notes covering the entire syllabus with simplified explanations.</div>
+                                <div class="service-importance">Importance: Saves time and provides focused learning material.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </div>
+                                <div class="service-title">Monthly Assessment Tests</div>
+                                <div class="service-description">Full-length mock tests to simulate the actual exam environment and build stamina.</div>
+                                <div class="service-importance">Importance: Helps in time management and reduces exam anxiety.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="service-title">Full Syllabus Mock Tests</div>
+                                <div class="service-description">Complete practice tests covering all subjects to evaluate overall preparation.</div>
+                                <div class="service-importance">Importance: Identifies weak areas and improves overall performance.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-sticky-note"></i>
+                                </div>
+                                <div class="service-title">Detailed Subject Notes</div>
+                                <div class="service-description">Chapter-wise notes with important concepts, formulas, and diagrams.</div>
+                                <div class="service-importance">Importance: Facilitates quick revision and better retention.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fab fa-whatsapp"></i>
+                                </div>
+                                <div class="service-title">WhatsApp Discussion Groups</div>
+                                <div class="service-description">Interactive groups for doubt clearing, peer learning, and motivation.</div>
+                                <div class="service-importance">Importance: Creates a supportive learning community.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                                <div class="service-title">YouTube Educational Lectures</div>
+                                <div class="service-description">Video lectures by experienced faculty with visual explanations.</div>
+                                <div class="service-importance">Importance: Enhances understanding through visual learning.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <div class="service-title">Complete Syllabus Practice Tests</div>
+                                <div class="service-description">Topic-wise tests for focused preparation on specific areas.</div>
+                                <div class="service-importance">Importance: Strengthens weak topics systematically.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="service-title">PDF Books and Study Materials</div>
+                                <div class="service-description">Downloadable resources for offline study and flexible learning.</div>
+                                <div class="service-importance">Importance: Enables studying anytime, anywhere.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="service-title">MDCAT Syllabus Question Banks</div>
+                                <div class="service-description">Extensive question banks with detailed solutions and explanations.</div>
+                                <div class="service-importance">Importance: Provides ample practice for all question types.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="service-title">English Grammar Rules and Tests</div>
+                                <div class="service-description">Specialized resources for English preparation with grammar rules and practice tests.</div>
+                                <div class="service-importance">Importance: Improves English proficiency for the exam.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="service-title">Logical Reasoning Tricks and Mock Tests</div>
+                                <div class="service-description">Strategies and practice for logical reasoning with shortcut techniques.</div>
+                                <div class="service-importance">Importance: Enhances problem-solving speed and accuracy.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <div class="service-title">Performance Analytics</div>
+                                <div class="service-description">Detailed analysis of your strengths and weaknesses with improvement suggestions.</div>
+                                <div class="service-importance">Importance: Provides data-driven insights for focused preparation.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="service-title">Personalized Study Plans</div>
+                                <div class="service-description">Customized schedules based on your preparation level and available time.</div>
+                                <div class="service-importance">Importance: Ensures systematic and organized preparation.</div>
+                            </div>
+                            
+                            <div class="service-detail-card">
+                                <div class="service-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <div class="service-title">Doubt Clearing Sessions</div>
+                                <div class="service-description">Regular sessions with subject experts to resolve conceptual difficulties.</div>
+                                <div class="service-importance">Importance: Clarifies concepts and builds confidence.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Our Success Strategy</h3>
+                        <p>At MedPlex Academy, we follow a proven 3-step strategy to ensure your success:</p>
+                        <ol class="services-list">
+                            <li><strong>Conceptual Understanding:</strong> Building strong foundational knowledge in all subjects</li>
+                            <li><strong>Application Practice:</strong> Developing problem-solving skills through extensive practice</li>
+                            <li><strong>Exam Simulation:</strong> Preparing for the actual test environment through timed mock tests</li>
+                        </ol>
+                        <p>Our structured approach has helped hundreds of students achieve their dream of becoming medical professionals. With consistent effort and our expert guidance, you can join the ranks of successful MedPlex Academy students.</p>
+                    </div>
+
+                    <!-- FAQ Section -->
+                    <div class="homepage-section">
+                        <h3>Frequently Asked Questions</h3>
+                        <p>Find answers to the most common questions about our services, quizzes, sessions, and more.</p>
+                        
+                        <div class="faq-container">
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How can I access the quizzes?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    All our premium quizzes are password protected. You need to contact our team at +92 300 0047325 to get access codes for the quizzes.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    What subjects are covered in your quizzes?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    We cover all MDCAT subjects: Biology, Chemistry, Physics, English, and Logical Reasoning with comprehensive chapter-wise quizzes.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How can I register for a session?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    You can register for our sessions through the "Register a Session" tab on this portal. Fill out the registration form and make payment through JazzCash.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    What is the difference between MedPlex I King Batch and MedPlex II King Batch?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    MedPlex I King Batch includes 5000+ MCQs, 50 full syllabus tests, and comprehensive notes, while MedPlex II King Batch includes 2000+ MCQs, 25 full syllabus tests, and detailed notes for focused preparation.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How can I contact Dr. Hamad Ahmad?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    You can contact Dr. Hamad Ahmad through WhatsApp at +92 300 0047325 or email at hamadahmadbjr971@gmail.com.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you provide online access to study materials?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, all registered students get online access to our comprehensive study materials, tests, and resources through our portal.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    What payment methods do you accept?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    We accept payments through JazzCash. The account details are provided in the session registration form.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How many questions are in each quiz?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Biology quizzes contain 80 MCQs, while Chemistry, Physics, English, and Logical Reasoning quizzes contain 50 MCQs each.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Are the quizzes timed?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, all quizzes are timed to simulate the actual MDCAT exam environment. Biology quizzes have 80 minutes, others have 50 minutes.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Can I get a refund for the sessions?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    We have a refund policy within 7 days of registration if you're not satisfied with our services.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you offer discounts for group registrations?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, we offer special discounts for group registrations. Contact us for details.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How updated are your quiz questions?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Our quiz questions are regularly updated according to the latest MDCAT patterns and syllabus changes.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Can I access quizzes on mobile devices?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, our quiz portal is fully responsive and works perfectly on mobile devices, tablets, and computers.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you provide solutions for quiz questions?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, all quizzes come with detailed explanations for each question to enhance conceptual understanding.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How can I track my progress?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Our system provides detailed performance analytics showing your strengths, weaknesses, and improvement over time.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you offer installment plans for session payments?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    We don't offer installment plans currently. Full payment is required before session access.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How soon can I access materials after registration?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Access is granted within 24 hours after payment verification.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Can I get sample materials before purchasing sessions?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, we can provide sample materials upon request. Contact us through WhatsApp for samples.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you offer online classes?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, we offer online classes through our platform with live sessions and recorded lectures.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How can I reset my quiz password?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Contact our support team at +92 300 0047325 for password reset or any access issues.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Are your study materials aligned with PMC guidelines?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, all our study materials are strictly aligned with PMC guidelines and the latest MDCAT syllabus.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you provide career counseling?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, we provide career counseling and guidance for medical college admissions.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Can I share my quiz access with friends?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    No, quiz access is personalized and should not be shared. Each student needs their own access code.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How often are new quizzes added?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    New quizzes are added regularly, usually on a weekly basis, covering various topics and difficulty levels.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you have physical centers for classes?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    We primarily operate online, but we do have partnerships with some physical academies in major cities.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    What is the success rate of your students?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Our students have an excellent success rate with many achieving 190+ marks in MDCAT as shown in our results section.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Can I get customized study plans?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    Yes, we provide personalized study plans based on your strengths, weaknesses, and available time.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    How can I provide feedback about your services?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    You can provide feedback through WhatsApp, email, or directly to our team members. We value your input.
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    Do you offer scholarships?
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    We offer limited scholarships to deserving students based on merit and financial need.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-access-info">
+                        <h3>How to Receive Quiz Access Codes</h3>
+                        <p>All our premium quizzes are protected with access codes to ensure that only registered students can benefit from our high-quality educational resources. To receive quiz access codes:</p>
+                        
+                        <ol class="services-list">
+                            <li><strong>Contact our team directly</strong> via WhatsApp at <strong>+92 300 0047325</strong></li>
+                            <li><strong>Provide your details</strong> including your name, educational background, and MDCAT preparation status</li>
+                            <li><strong>Discuss your requirements</strong> with our educational consultants who will guide you to the most suitable quiz packages</li>
+                            <li><strong>Receive your access codes</strong> after completing the registration process</li>
+                        </ol>
+                        
+                        <p><strong>Why Our Quizzes Are Different:</strong></p>
+                        <ul class="services-list">
+                            <li><i class="fas fa-star"></i> <strong>Comprehensive Coverage:</strong> Each quiz covers the entire MDCAT syllabus with questions designed by medical education experts</li>
+                            <li><i class="fas fa-star"></i> <strong>Quality Assurance:</strong> All questions undergo multiple rounds of review to ensure accuracy and relevance</li>
+                            <li><i class="fas fa-star"></i> <strong>Detailed Explanations:</strong> Every question comes with comprehensive explanations to enhance conceptual understanding</li>
+                            <li><i class="fas fa-star"></i> <strong>Performance Analytics:</strong> Track your progress with detailed performance reports and improvement suggestions</li>
+                            <li><i class="fas fa-star"></i> <strong>Updated Content:</strong> Regular updates to align with the latest MDCAT patterns and syllabus changes</li>
+                            <li><i class="fas fa-star"></i> <strong>Exam Simulation:</strong> Real exam-like interface and timing to prepare you for the actual test environment</li>
+                        </ul>
+                        
+                        <p>Our quizzes are not just assessment tools but comprehensive learning resources that help you identify knowledge gaps, strengthen weak areas, and build confidence for the actual MDCAT examination.</p>
+                        
+                        <p><strong>Contact us today at +92 300 0047325 to get started with your MDCAT preparation journey!</strong></p>
+                    </div>
+                    
+                    <div class="developer-info">
+                        <h3>Need More Quizzes or a Custom Website?</h3>
+                        <p>If you need additional quizzes or a professional website developed for your educational institution at a very comfortable price, contact our developer:</p>
+                        <a href="https://wa.me/923000047325" class="contact-developer" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Contact Developer on WhatsApp: +92 300 0047325
+                        </a>
+                        <p style="margin-top: 4.86px; font-size: 0.405rem; color: var(--text-secondary);">
+                            If you want to receive complete session quizzes or want to make sessions for your academies, please message him on WhatsApp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Quizzes Tab -->
+        <div class="tab-content" id="all-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-globe"></i> All Quizzes</h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="refresh-all">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-3" id="all-quizzes-container">
+                    <!-- Quizzes will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chemistry Quizzes Tab -->
+        <div class="tab-content" id="chemistry-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-flask"></i> Chemistry Quizzes</h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="refresh-chemistry">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-3" id="chemistry-quizzes-container">
+                    <!-- Chemistry quizzes will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Biology Quizzes Tab -->
+        <div class="tab-content" id="biology-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-dna"></i> Biology Quizzes</h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="refresh-biology">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-3" id="biology-quizzes-container">
+                    <!-- Biology quizzes will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Physics Quizzes Tab -->
+        <div class="tab-content" id="physics-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-atom"></i> Physics Quizzes</h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="refresh-physics">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-3" id="physics-quizzes-container">
+                    <!-- Physics quizzes will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- English Quizzes Tab -->
+        <div class="tab-content" id="english-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-language"></i> English Quizzes</h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="refresh-english">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-3" id="english-quizzes-container">
+                    <!-- English quizzes will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Logical Reasoning Quizzes Tab -->
+        <div class="tab-content" id="logical-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-brain"></i> Logical Reasoning Quizzes</h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="refresh-logical">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-3" id="logical-quizzes-container">
+                    <!-- Logical Reasoning quizzes will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Register a Session Tab -->
+        <div class="tab-content" id="session-tab">
+            <div class="panel fade-in" id="session-registration-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-user-graduate"></i> Register a Session</h3>
+                </div>
+                
+                <div class="session-registration-form">
+                    <div class="form-body">
+                        <div class="form-section">
+                            <div class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <h3>Register a Session — MedPlex Academy</h3>
+                            </div>
+                            <p>The MedPlex Academy Session Registration Page allows students to officially enroll in our MDCAT preparation program. This page guides students through the complete registration procedure, from submitting the required fee to filling out the form with accurate information. It ensures a smooth, secure, and simple registration experience for every student.</p>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <h3>Payment Instructions</h3>
+                            </div>
+                            <p>Before filling out the registration form, students must send the session fee to the official MedPlex Academy payment account. The amount must be transferred to Sohail Ahmad — JazzCash Account Number: 03299077817. Once the payment is sent, students must save their Transaction ID, as it is necessary for verification. No registration will be approved without a verified Transaction ID.</p>
+                        </div>
+
+                        <form id="registrationForm">
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="section-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <h3>Registration Form Requirements</h3>
+                                </div>
+                                <p>After completing the payment, students must fill in the session registration form. The form requires the following details: Name, Father Name, Email Address, Phone Number, and the JazzCash Transaction ID. All fields must be submitted correctly because these details help the team verify the payment and confirm the student's enrollment in the session.</p>
+
+                                <div class="form-group">
+                                    <label for="fullName">Full Name</label>
+                                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fatherName">Father's Name</label>
+                                    <input type="text" id="fatherName" name="fatherName" placeholder="Enter your father's name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="whatsapp">Phone Number (WhatsApp)</label>
+                                    <input type="tel" id="whatsapp" name="whatsapp" placeholder="e.g., 923xxxxxxxxx" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="section-icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <h3>Session Selection</h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="selectedSession">Selected Session</label>
+                                    <select id="selectedSession" name="selectedSession" required>
+                                        <option value="" disabled selected>Select a Batch</option>
+                                        <option value="MedPlex I King Batch">MedPlex I King Batch</option>
+                                        <option value="MedPlex II King Batch">MedPlex II King Batch</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="section-icon">
+                                        <i class="fas fa-receipt"></i>
+                                    </div>
+                                    <h3>Transaction Details</h3>
+                                </div>
+
+                                <div class="form-group">
+                                    <p>Please send your payment to the following account before submitting your form:</p>
+                                    <div class="payment-info">
+                                        <p><strong>Account Title:</strong> Sohail Ahmad</p>
+                                        <p><strong>JazzCash Number:</strong> 03299077817</p>
+                                    </div>
+                                    <p>After completing the payment, enter your transaction ID below:</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="transactionId">Transaction ID</label>
+                                    <input type="text" id="transactionId" name="transactionId" placeholder="Enter your transaction ID" required>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="section-title">
+                                    <div class="section-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <h3>Registration Confirmation</h3>
+                                </div>
+
+                                <button type="submit" class="form-submit-btn" id="submitButton">Submit Registration</button>
+                            </div>
+                        </form>
+
+                        <div id="status-message"></div>
+
+                        <div class="form-section">
+                            <div class="section-title">
+                                <div class="section-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <h3>Registration Process</h3>
+                            </div>
+                            
+                            <p><strong>Submit Button</strong><br>
+                            Once all the form fields are completed, the student must press the Submit Registration button. This sends the registration information for verification. The data entered must be accurate to avoid delays or rejection. After clicking submit, the system processes and checks the provided Transaction ID with the payment record.</p>
+                            
+                            <p><strong>Success Notification</strong><br>
+                            If all the details in the form are correct and the Transaction ID is valid and verified, the system will display a Success Notification. This notification will appear on the webpage with a beautiful animation, clearly showing a correct or success visual. The message displayed will confirm that the registration has been received and the student will be contacted soon.</p>
+                            
+                            <p><strong>Rejected Notification</strong><br>
+                            If the form is incomplete, incorrectly filled, or the Transaction ID is invalid or unverified, a Rejected Notification will appear. This notification will also use an attractive incorrect/error animation to inform the student that the registration could not be processed. The message will guide the student to recheck their information and submit the form again correctly.</p>
+                            
+                            <p><strong>Final Confirmation</strong><br>
+                            The student's registration will only be accepted after successful verification of all details and payment confirmation. MedPlex Academy will contact each registered student personally after confirming their Transaction ID and form submission.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Tab -->
+        <div class="tab-content" id="password-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-key"></i> Password Tabs</h3>
+                </div>
+                
+                <div class="password-list">
+                    <div class="homepage-section">
+                        <h3>Access Quiz Passwords</h3>
+                        <p>To access the complete list of quiz passwords, please enter the master password below. This feature is available for registered members and administrators only.</p>
+                        <p><strong>Note:</strong> Passwords are case-sensitive and must be entered exactly as provided. Incorrect passwords will not grant access to the protected quizzes.</p>
+                    </div>
+                    
+                    <div id="password-access-form">
+                        <div class="form-group">
+                            <label for="master-password">Enter Master Password</label>
+                            <input type="password" id="master-password" placeholder="Enter master password">
+                            <div class="error-message" id="master-password-error">Incorrect password. Please try again.</div>
+                        </div>
+                        <button class="btn btn-primary" id="submit-master-password">
+                            <i class="fas fa-lock-open"></i> Access Password List
+                        </button>
+                    </div>
+                    
+                    <div id="password-table-container" style="display: none;">
+                        <div class="homepage-section">
+                            <h3>Complete Password List</h3>
+                            <p>Below is the complete list of all quiz passwords organized by subject and chapter. Use these passwords to access the protected quizzes.</p>
+                        </div>
+                        <table class="password-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Chapter Name</th>
+                                    <th>Quiz ID</th>
+                                    <th>Password</th>
+                                </tr>
+                            </thead>
+                            <tbody id="password-table-body">
+                                <!-- Password table will be populated here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="quiz-access-info">
+                        <h3>How to Get Quiz Access Codes</h3>
+                        <p>All our premium MDCAT preparation quizzes are protected with access codes to maintain the quality and exclusivity of our educational resources. Here's how you can obtain access to these valuable learning tools:</p>
+                        
+                        <ol class="services-list">
+                            <li><strong>Direct Contact:</strong> Reach out to our educational team directly via WhatsApp at <strong>+92 300 0047325</strong></li>
+                            <li><strong>Consultation:</strong> Discuss your MDCAT preparation needs with our experienced educational consultants</li>
+                            <li><strong>Registration:</strong> Complete a simple registration process to verify your student status</li>
+                            <li><strong>Access Codes:</strong> Receive personalized access codes for the quiz packages that best suit your preparation requirements</li>
+                        </ol>
+                        
+                        <p><strong>Why Choose Our Quizzes?</strong></p>
+                        <ul class="services-list">
+                            <li><i class="fas fa-check-circle"></i> <strong>Expertly Crafted Content:</strong> All questions are designed by medical professionals and education experts</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>Comprehensive Coverage:</strong> Complete alignment with the latest MDCAT syllabus and examination patterns</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>Quality Assurance:</strong> Rigorous review process to ensure accuracy and educational value</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>Detailed Analytics:</strong> In-depth performance tracking to identify strengths and improvement areas</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>Regular Updates:</strong> Continuous content updates to reflect the latest examination trends</li>
+                            <li><i class="fas fa-check-circle"></i> <strong>Exam Simulation:</strong> Realistic test environment to build confidence and time management skills</li>
+                        </ul>
+                        
+                        <p>Our quizzes represent the culmination of years of experience in medical education and have helped hundreds of students achieve outstanding results in the MDCAT examination. Each quiz is designed not just to test your knowledge but to enhance your understanding and application of key concepts.</p>
+                        
+                        <p><strong>Contact us today at +92 300 0047325 to begin your journey toward MDCAT success!</strong></p>
+                    </div>
+                    
+                    <div class="developer-info">
+                        <h3>Need Custom Quizzes or a Similar Portal?</h3>
+                        <p>If you're an educational institution or teacher looking to create custom quizzes or a similar interactive portal for your students, our developer can create a tailored solution at a very affordable price.</p>
+                        <a href="https://wa.me/923000047325" class="contact-developer" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Contact Developer on WhatsApp: +92 300 0047325
+                        </a>
+                        <p style="margin-top: 4.86px; font-size: 0.405rem; color: var(--text-secondary);">
+                            If you want to receive complete session quizzes or want to make sessions for your academies, please message him on WhatsApp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Us Tab -->
+        <div class="tab-content" id="about-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-info-circle"></i> About Us</h3>
+                </div>
+                
+                <div class="homepage-content">
+                    <div class="homepage-section">
+                        <h3>About Us — MedPlex Academy</h3>
+                        <p>MedPlex Academy is a dedicated, self-built MDCAT preparation platform created with one purpose: to provide students with a complete, reliable, and powerful online learning system that guarantees improvement and excellence. Unlike other academies, everything offered at MedPlex — from notes to tests to MCQs — is developed entirely by our own academic team. We believe true success comes from originality, clarity, and a structured approach, and that is exactly what we deliver.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Our Vision</h3>
+                        <p>Our vision is to guide every MDCAT aspirant toward becoming a confident, well-prepared, and successful future doctor. We aim to remove confusion, guesswork, and outdated study methods by providing students with a clear roadmap and quality resources crafted specifically for modern MDCAT standards.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Our Mission</h3>
+                        <p>Our mission is to create a premium online academy where students receive focused practice, expert guidance, and exam-level testing — all in one place. We dedicate ourselves to offering content that builds conceptual depth, sharpens analytical thinking, and improves performance with every step.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>What Makes MedPlex Academy Unique</h3>
+                        <p>MedPlex Academy is built on originality and clarity. All notes, questions, and tests are created in-house by our qualified education team. This ensures:</p>
+                        <ul class="services-list">
+                            <li><i class="fas fa-check"></i> Content that matches modern MDCAT patterns</li>
+                            <li><i class="fas fa-check"></i> Updated tests based on changing exam styles</li>
+                            <li><i class="fas fa-check"></i> Logical, multi-step MCQs that build real critical thinking</li>
+                            <li><i class="fas fa-check"></i> Notes that simplify complex concepts</li>
+                            <li><i class="fas fa-check"></i> Study plans designed uniquely for MedPlex students</li>
+                        </ul>
+                        <p>We don't copy. We create. And that makes our system stronger, accurate, and highly reliable.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Our Learning System</h3>
+                        <p>We offer a complete preparation system that includes:</p>
+                        <div class="about-features">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <div class="feature-title">Topic-Wise Tests</div>
+                                <div class="feature-description">
+                                    For focused concept strengthening
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <div class="feature-title">Chapter-Wise Tests</div>
+                                <div class="feature-description">
+                                    For deep chapter mastery
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="feature-title">Book-Wise Tests</div>
+                                <div class="feature-description">
+                                    From MedPlex-compiled content
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="feature-title">Full Syllabus Tests</div>
+                                <div class="feature-description">
+                                    Exact MDCAT simulation
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="feature-title">5000+ Critical Thinking MCQs</div>
+                                <div class="feature-description">
+                                    With 3–4 step reasoning
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-sticky-note"></i>
+                                </div>
+                                <div class="feature-title">MedPlex Notes & Key Points</div>
+                                <div class="feature-description">
+                                    Self-developed and easy to understand
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                                <div class="feature-title">Test Simulations</div>
+                                <div class="feature-description">
+                                    Real exam environment
+                                </div>
+                            </div>
+                            
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-user-friends"></i>
+                                </div>
+                                <div class="feature-title">Expert Mentor Support</div>
+                                <div class="feature-description">
+                                    Guidance throughout the journey
+                                </div>
+                            </div>
+                        </div>
+                        <p>Every element of MedPlex Academy works together to make the student independent, confident, and exam-ready.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Our Team</h3>
+                        <p>The MedPlex team consists of passionate subject specialists, content creators, test designers, and academic mentors. Each member is committed to developing quality educational material and providing guidance that shapes students into high achievers. Our team works continuously to update content, refine MCQs, and ensure students receive the best preparation possible.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Our Commitment to Students</h3>
+                        <p>At MedPlex Academy, students come first.
+                        We are committed to being:</p>
+                        <ul class="services-list">
+                            <li><i class="fas fa-check"></i> Accurate in our content</li>
+                            <li><i class="fas fa-check"></i> Honest in our guidance</li>
+                            <li><i class="fas fa-check"></i> Supportive during preparation</li>
+                            <li><i class="fas fa-check"></i> Dedicated to each student's success</li>
+                        </ul>
+                        <p>Your goals become our goals. Your success becomes our achievement.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Join the MedPlex Journey</h3>
+                        <p>MedPlex Academy isn't just a platform — it's a complete preparation environment built for serious MDCAT students. If you want original notes, deep-thinking MCQs, structured testing, and expert support, MedPlex Academy is your perfect partner.</p>
+                        <p>Join us, learn with us, and succeed with us.
+                        Your MDCAT journey begins here — at MedPlex Academy.</p>
+                    </div>
+                    
+                    <div class="developer-info">
+                        <h3>Interested in a Similar Educational Platform?</h3>
+                        <p>If you're looking to create a similar educational portal for your institution or organization, our developer can build a customized solution tailored to your specific needs at a very competitive price.</p>
+                        <a href="https://wa.me/923000047325" class="contact-developer" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Contact Developer on WhatsApp: +92 300 0047325
+                        </a>
+                        <p style="margin-top: 4.86px; font-size: 0.405rem; color: var(--text-secondary);">
+                            If you want to receive complete session quizzes or want to make sessions for your academies, please message him on WhatsApp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Us Tab -->
+        <div class="tab-content" id="contact-tab">
+            <div class="panel fade-in">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i class="fas fa-envelope"></i> Contact Us</h3>
+                </div>
+                
+                <div class="homepage-content">
+                    <div class="contact-team">
+                        <div class="team-head">
+                            <img src="https://i.ibb.co/7d5pVqSS/developer.jpg" alt="Dr. Hamad Ahmad" class="head-image">
+                            <div class="head-name">Dr. Hamad Ahmad</div>
+                            <div class="head-title">Head of MedPlex Academy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Get in Touch</h3>
+                        <p>If you have any questions about our courses, need assistance with your MDCAT preparation, or want to know more about our services, please feel free to contact us through any of the following channels:</p>
+                        
+                        <ul class="services-list">
+                            <li><i class="fas fa-envelope"></i> Email: 
+                                <button class="btn btn-info" id="email-button" style="margin-left: 4.86px; padding: 2.43px 4.86px;">
+                                    <i class="fas fa-envelope"></i> hamadahmadbjr971@gmail.com
+                                </button>
+                            </li>
+                            <li><i class="fab fa-whatsapp" style="color: #25D366;"></i> WhatsApp: 
+                                <a href="https://wa.me/923000047325" class="btn btn-success" style="margin-left: 4.86px; padding: 2.43px 4.86px; background-color: #25D366;" target="_blank">
+                                    <i class="fab fa-whatsapp"></i> +92 300 0047325
+                                </a>
+                            </li>
+                            <li><i class="fas fa-phone"></i> Phone: +92 300 0047325</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Office Hours</h3>
+                        <p>Our support team is available during the following hours:</p>
+                        <ul class="services-list">
+                            <li><i class="fas fa-clock"></i> Monday to Friday: 9:00 AM - 6:00 PM</li>
+                            <li><i class="fas fa-clock"></i> Saturday: 10:00 AM - 4:00 PM</li>
+                            <li><i class="fas fa-clock"></i> Sunday: Closed</li>
+                        </ul>
+                        <p>For urgent queries outside office hours, please use the WhatsApp number provided above.</p>
+                    </div>
+                    
+                    <div class="homepage-section">
+                        <h3>Frequently Asked Questions</h3>
+                        <p><strong>Q: How do I enroll in your MDCAT preparation program?</strong><br>
+                        A: You can enroll by contacting us through any of the channels mentioned above. Our team will guide you through the registration process.</p>
+                        
+                        <p><strong>Q: Do you offer scholarships or financial assistance?</strong><br>
+                        A: Yes, we offer scholarships to deserving students based on merit and financial need. Please contact us for more information.</p>
+                        
+                        <p><strong>Q: Can I access your materials on mobile devices?</strong><br>
+                        A: Absolutely! Our platform is optimized for all devices including smartphones, tablets, and computers.</p>
+                        
+                        <p><strong>Q: Do you provide one-on-one tutoring?</strong><br>
+                        A: Yes, we offer personalized tutoring sessions for students who need extra help in specific subjects.</p>
+                        
+                        <p><strong>Q: How can I get access to the premium quizzes?</strong><br>
+                        A: You can contact us directly via WhatsApp at +92 300 0047325 to discuss quiz access options and receive personalized access codes.</p>
+                    </div>
+                    
+                    <div class="quiz-access-info">
+                        <h3>Premium Quiz Access Information</h3>
+                        <p>All our premium MDCAT preparation quizzes are protected with access codes to ensure the highest quality learning experience for our registered students. Here's what you need to know about accessing our quiz resources:</p>
+                        
+                        <p><strong>Quiz Quality and Features:</strong></p>
+                        <ul class="services-list">
+                            <li><i class="fas fa-check"></i> Comprehensive coverage of the entire MDCAT syllabus</li>
+                            <li><i class="fas fa-check"></i> Questions designed by medical education experts</li>
+                            <li><i class="fas fa-check"></i> Detailed explanations for every question</li>
+                            <li><i class="fas fa-check"></i> Performance analytics and progress tracking</li>
+                            <li><i class="fas fa-check"></i> Real exam simulation with timed tests</li>
+                            <li><i class="fas fa-check"></i> Regular updates based on the latest exam patterns</li>
+                        </ul>
+                        
+                        <p><strong>How to Get Access Codes:</strong></p>
+                        <ol class="services-list">
+                            <li>Contact our educational team via WhatsApp at <strong>+92 300 0047325</strong></li>
+                            <li>Provide your educational background and MDCAT preparation status</li>
+                            <li>Discuss your specific learning needs with our consultants</li>
+                            <li>Receive personalized access codes for the most suitable quiz packages</li>
+                            <li>Start practicing with our premium quizzes immediately</li>
+                        </ol>
+                        
+                        <p>Our quizzes have helped hundreds of students achieve outstanding results in the MDCAT examination. Don't miss this opportunity to enhance your preparation with our expertly crafted assessment tools.</p>
+                        
+                        <p><strong>Contact us today at +92 300 0047325 to get started!</strong></p>
+                    </div>
+                    
+                    <div class="developer-info">
+                        <h3>Website Development Services</h3>
+                        <p>This educational portal was developed by our technical team. If you need a similar website or custom web application for your educational institution, business, or organization, our developer can create a professional solution at a very comfortable price.</p>
+                        <a href="https://wa.me/923000047325" class="contact-developer" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Contact Developer on WhatsApp: +92 300 0047325
+                        </a>
+                        <p style="margin-top: 4.86px; font-size: 0.405rem; color: var(--text-secondary);">
+                            If you want to receive complete session quizzes or want to make sessions for your academies, please message him on WhatsApp.
+                        </p>
+                        <p style="margin-top: 4.86px;">Or send an email to: 
+                            <button class="btn btn-info" id="dev-email-button" style="margin-left: 4.86px; padding: 2.43px 4.86px;">
+                                <i class="fas fa-envelope"></i> hamadahmadbjr971@gmail.com
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 MedPlex Academy Quiz Portal. All rights reserved.</p>
+                <p>Developed with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for aspiring medical students</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Quiz data with all the provided information
+        const quizzes = [
+            // Chemistry Quizzes
+            { id: "WCW-CHE-0011", chapter: "Hydrocarbon", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-00152718/", questions: 50, time: 50, password: "WCW-NET-314159" },
+            { id: "WCW-CHE-0017", chapter: "Industrial Chemistry", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-003/", questions: 50, time: 50, password: "WCW-OPS-928374" },
+            { id: "WCW-CHE-007", chapter: "Chemical Bonding", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-002/", questions: 50, time: 50, password: "WCW-DEV-465823" },
+            { id: "WCW-CHE-007", chapter: "Chemical Bonding", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-001/", questions: 50, time: 50, password: "WCW-QA-219876" },
+            { id: "WCW-CHE-0013", chapter: "Alcohol & Phenol", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-00141615/", questions: 50, time: 50, password: "WCW-SYS-654321" },
+            { id: "WCW-CHE-0016", chapter: "Chemistry Chapter", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-00151718/", questions: 50, time: 50, password: "WCW-DBA-982135" },
+            { id: "WCW-CHE-0015", chapter: "Chemistry Chapter", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-00162819/", questions: 50, time: 50, password: "WCW-NFS-753421" },
+            { id: "WCW-CHE-009", chapter: "Electrochemistry", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-0016181816/", questions: 50, time: 50, password: "WCW-CAD-624589" },
+            { id: "WCW-CHE-0014", chapter: "Aldehyde and Ketones", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-00152718/", questions: 50, time: 50, password: "WCW-API-467923" },
+            { id: "WCW-CHE-0010", chapter: "Chemical Equilibrium", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-00141617/", questions: 50, time: 50, password: "WCW-GIT-135792" },
+            { id: "WCW-CHE-0018", chapter: "S,P,D & F Block Elements", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/First-two-chemistry-chapter-s-/", questions: 50, time: 50, password: "WCW-SEC-982634" },
+            { id: "WCW-CHE-0012", chapter: "Alkyl Halides", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-00141618/", questions: 50, time: 50, password: "WCW-FIN-421953" },
+            { id: "WCW-CHE-003", chapter: "Atomic Structure", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-001fqh/", questions: 50, time: 50, password: "WCW-HR-314526" },
+            { id: "WCW-CHE-005", chapter: "Gas", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-00152728/", questions: 50, time: 50, password: "WCW-IT-982718" },
+            { id: "WCW-CHE-001", chapter: "Liquid", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-001427/", questions: 50, time: 50, password: "WCW-SCM-467592" },
+            { id: "WCW-CHE-006", chapter: "Stichiometry", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-001426/", questions: 50, time: 50, password: "WCW-PRD-184629" },
+            { id: "WCW-CHE-004", chapter: "Solid", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-PHY-001527/", questions: 50, time: 50, password: "WCW-MIS-739824" },
+            { id: "WCW-CHE-002", chapter: "Thermochemistry", subject: "Chemistry", url: "https://whitecoatwarrior.github.io/WCW-CHE-001467/", questions: 50, time: 50, password: "WCW-CRM-982137" },
+            
+            // Biology Quizzes
+            { id: "WCW-BIO-04", chapter: "Inheritance", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-001hg/", questions: 80, time: 80, password: "WCW-ERP-645893" },
+            { id: "WCW-BIO-0012", chapter: "Reproduction", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-001051/", questions: 80, time: 80, password: "WCW-CMS-219834" },
+            { id: "WCW-BIO-05", chapter: "Enzyme", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-CHE-0041/", questions: 80, time: 80, password: "WCW-BIZ-463219" },
+            { id: "WCW-BIO-08", chapter: "Acellular Life", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-09/", questions: 80, time: 80, password: "WCW-LOG-982351" },
+            { id: "WCW-BIO-04", chapter: "Inheritance", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-RES-004-BIO/", questions: 80, time: 80, password: "WCW-TEC-467218" },
+            { id: "WCW-BIO-03", chapter: "Skeleton", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-RES-003-BIO/", questions: 80, time: 80, password: "WCW-ENV-135724" },
+            { id: "WCW-BIO-02", chapter: "Excretion", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-RES-02-BIO/", questions: 80, time: 80, password: "WCW-SUP-753982" },
+            { id: "WCW-BIO-01", chapter: "Respiration", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-RES-001-BIO/", questions: 80, time: 80, password: "WCW-ADM-982736" },
+            { id: "WCW-BIO-06", chapter: "Biomolecules", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-0015171h/", questions: 80, time: 80, password: "WCW-PAY-421987" },
+            { id: "WCW-BIO-0013", chapter: "Circulation", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-CHE-0015171819/", questions: 80, time: 80, password: "WCW-TAX-624793" },
+            { id: "WCW-BIO-0011", chapter: "Digestion", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-001517191/", questions: 80, time: 80, password: "WCW-AUD-467592" },
+            { id: "WCW-BIO-0014", chapter: "Bioenergetics", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-0015281991/", questions: 80, time: 80, password: "WCW-ACC-982634" },
+            { id: "WCW-BIO-0015", chapter: "Cell Structure and Function", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-001517187/", questions: 80, time: 80, password: "WCW-FIN-314159" },
+            { id: "WCW-BIO-07", chapter: "Evolution", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-00161719/", questions: 80, time: 80, password: "WCW-MKT-928374" },
+            { id: "WCW-BIO-04", chapter: "Inheritance", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-CHE-001426/", questions: 80, time: 80, password: "WCW-COM-465823" },
+            { id: "WCW-BIO-0016", chapter: "Immune System", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-PHY-0014171/", questions: 80, time: 80, password: "WCW-ITM-219876" },
+            { id: "WCW-BIO-009", chapter: "Biotechnology", subject: "Biology", url: "https://whitecoatwarrior.github.io/WCW-CHE-0014161/", questions: 80, time: 80, password: "WCW-LOG-654321" },
+            
+            // Physics Quizzes
+            { id: "WCW-PHY-0011", chapter: "Rotational and Circular Motion", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-0014171ga/", questions: 50, time: 50, password: "WCW-RET-982135" },
+            { id: "WCW-PHY-03", chapter: "Electromagnetism", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-CHE-00517/", questions: 50, time: 50, password: "WCW-SAL-753421" },
+            { id: "WCW-PHY-04", chapter: "Electromagnetic Induction", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-008/", questions: 50, time: 50, password: "WCW-MAR-624589" },
+            { id: "WCW-PHY-06", chapter: "Electronic", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-006/", questions: 50, time: 50, password: "WCW-CUS-467923" },
+            { id: "WCW-PHY-01", chapter: "Electrostatic", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-005/", questions: 50, time: 50, password: "WCW-SUP-135792" },
+            { id: "WCW-PHY-0016", chapter: "Force and Motion", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-004/", questions: 50, time: 50, password: "WCW-ADM-982718" },
+            { id: "WCW-PHY-0016", chapter: "Fluid Dynamics", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-003/", questions: 50, time: 50, password: "WCW-PUR-467592" },
+            { id: "WCW-PHY-0010", chapter: "Vectors and Equilibrium", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-02/", questions: 50, time: 50, password: "WCW-DIS-184629" },
+            { id: "WCW-PHY-05", chapter: "AC Circuit", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-0010/", questions: 50, time: 50, password: "WCW-MER-739824" },
+            { id: "WCW-PHY-001", chapter: "Work Power and Energy", subject: "Physics", url: "https://whitecoatwarrior.github.io/Test---ID-WCW-PHY-001/", questions: 50, time: 50, password: "WCW-OPS-982137" },
+            { id: "WCW-PHY-04", chapter: "Electromagnetic Induction", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-001/", questions: 50, time: 50, password: "WCW-DEV-645893" },
+            { id: "WCW-PHY-0015", chapter: "Oscillations", subject: "Physics", url: "https://whitecoatwarrior.github.io/shiny-computing-machine/", questions: 50, time: 50, password: "WCW-QA-219834" },
+            { id: "WCW-PHY-02", chapter: "Current Electricity", subject: "Physics", url: "https://whitecoatwarrior.github.io/fictional-octo-enigma/", questions: 50, time: 50, password: "WCW-SYS-463219" },
+            { id: "WCW-PHY-07", chapter: "Dawn of Modern Physics", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-0015171/", questions: 50, time: 50, password: "WCW-DBA-982634" },
+            { id: "WCW-PHY-08-9", chapter: "Nuclear Physics and Atomic Spectra", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-001478966/", questions: 50, time: 50, password: "WCW-NFS-467218" },
+            { id: "WCW-PHY-03", chapter: "Electromagnetism", subject: "Physics", url: "https://whitecoatwarrior.github.io/WCW-PHY-001579/", questions: 50, time: 50, password: "WCW-CAD-135724" },
+            
+            // English Quizzes
+            { id: "WCW-ENG-03", chapter: "Tenses and Voices", subject: "English", url: "https://whitecoatwarrior.github.io/englishtenses-and-vioces/", questions: 50, time: 50, password: "WCW-API-982736" },
+            { id: "WCW-ENG-04", chapter: "Antecedent Agreement Adverb and Preposition", subject: "English", url: "https://whitecoatwarrior.github.io/Pro-ovajjakCakbavak/", questions: 50, time: 50, password: "WCW-GIT-467592" },
+            { id: "WCW-ENG-02", chapter: "Gerund and Infinitive", subject: "English", url: "https://whitecoatwarrior.github.io/animated-octo-computing-machine/", questions: 50, time: 50, password: "WCW-SEC-421953" },
+            { id: "WCW-ENG-06", chapter: "Punctuation Marks & Spellings", subject: "English", url: "https://whitecoatwarrior.github.io/reimagined-giggle/", questions: 50, time: 50, password: "WCW-FIN-314526" },
+            { id: "WCW-ENG-07", chapter: "Narrations & Figurative Language", subject: "English", url: "https://whitecoatwarrior.github.io/silver-happiness/", questions: 50, time: 50, password: "WCW-HR-982718" },
+            { id: "WCW-ENG-01", chapter: "Subjects Verb Agreement", subject: "English", url: "https://whitecoatwarrior.github.io/legendary-octo-tribble/", questions: 50, time: 50, password: "WCW-IT-467923" },
+            { id: "WCW-ENG-05", chapter: "Phrases & Transitional Devices", subject: "English", url: "https://whitecoatwarrior.github.io/automatic-guacamole/", questions: 50, time: 50, password: "WCW-SCM-624589" },
+            
+            // Logical Reasoning Quizzes
+            { id: "WCW-LR-01", chapter: "Critical Thinking", subject: "Logical Reasoning", url: "https://whitecoatwarrior.github.io/glowing-journey/", questions: 50, time: 50, password: "WCW-RET-982135" },
+            { id: "WCW-LR-02", chapter: "Relation Predict Base", subject: "Logical Reasoning", url: "https://whitecoatwarrior.github.io/curly-umbrella/", questions: 50, time: 50, password: "WCW-SAL-753421" },
+            { id: "WCW-LR-05", chapter: "Cause and Effect, Logical Deduction, Letter and Number Series, Geometric Progression and Letter Series", subject: "Logical Reasoning", url: "https://whitecoatwarrior.github.io/super-duper-couscous/", questions: 50, time: 50, password: "WCW-EXT-000001" },
+            { id: "WCW-LR-04", chapter: "Course of Actions, False Belief True Beliefs, Valid and Wrong Argument Syllogism", subject: "Logical Reasoning", url: "https://whitecoatwarrior.github.io/crispy-goggles/", questions: 50, time: 50, password: "WCW-EXT-000002" },
+            { id: "WCW-LR-03", chapter: "Assumption Based, Conclusion Based, Argument Based, Premises Based", subject: "Logical Reasoning", url: "https://whitecoatwarrior.github.io/cautious-carnival/", questions: 50, time: 50, password: "WCW-EXT-000003" }
+        ];
+
+        // Categorize quizzes
+        const chemistryQuizzes = quizzes.filter(quiz => quiz.subject === "Chemistry");
+        const biologyQuizzes = quizzes.filter(quiz => quiz.subject === "Biology");
+        const physicsQuizzes = quizzes.filter(quiz => quiz.subject === "Physics");
+        const englishQuizzes = quizzes.filter(quiz => quiz.subject === "English");
+        const logicalQuizzes = quizzes.filter(quiz => quiz.subject === "Logical Reasoning");
+
+        // Global variables for password modal
+        let currentQuiz = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the application
+            initApp();
+            
+            function initApp() {
+                // Set up event listeners for welcome screen
+                document.getElementById('start-btn').addEventListener('click', () => {
+                    document.getElementById('welcome-overlay').classList.add('hidden');
+                });
+                
+                // Hide welcome animation after delay
+                setTimeout(() => {
+                    document.getElementById('welcome-overlay').classList.add('hidden');
+                }, 5000);
+                
+                // Set up tab navigation
+                setupTabs();
+                
+                // Set up event listeners
+                setupEventListeners();
+                
+                // Load quizzes
+                loadQuizzes();
+                
+                // Update stats
+                updateStats();
+                
+                // Apply animations
+                applyAnimations();
+                
+                // Setup registration form
+                setupRegistrationForm();
+            }
+            
+            function setupTabs() {
+                const tabButtons = document.querySelectorAll('.nav-btn[data-tab]');
+                const tabContents = document.querySelectorAll('.tab-content');
+                
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabId = button.getAttribute('data-tab');
+                        
+                        // Update active tab button
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        
+                        // Show active content
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        document.getElementById(`${tabId}-tab`).classList.add('active');
+                    });
+                });
+            }
+            
+            function setupEventListeners() {
+                // Hamburger menu toggle
+                document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+                
+                // Theme toggle
+                document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+                
+                // Refresh buttons
+                document.getElementById('refresh-all').addEventListener('click', () => loadQuizzes());
+                document.getElementById('refresh-chemistry').addEventListener('click', () => loadQuizzes());
+                document.getElementById('refresh-biology').addEventListener('click', () => loadQuizzes());
+                document.getElementById('refresh-physics').addEventListener('click', () => loadQuizzes());
+                document.getElementById('refresh-english').addEventListener('click', () => loadQuizzes());
+                document.getElementById('refresh-logical').addEventListener('click', () => loadQuizzes());
+                
+                // Password modal events
+                document.getElementById('close-modal').addEventListener('click', closePasswordModal);
+                document.getElementById('submit-password').addEventListener('click', submitPassword);
+                document.getElementById('quiz-password').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        submitPassword();
+                    }
+                });
+                
+                // Close modal when clicking outside
+                document.getElementById('password-modal').addEventListener('click', (e) => {
+                    if (e.target.id === 'password-modal') {
+                        closePasswordModal();
+                    }
+                });
+                
+                // Master password for password list
+                document.getElementById('submit-master-password').addEventListener('click', submitMasterPassword);
+                document.getElementById('master-password').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        submitMasterPassword();
+                    }
+                });
+                
+                // Email buttons
+                document.getElementById('email-button').addEventListener('click', () => {
+                    window.location.href = 'mailto:hamadahmadbjr971@gmail.com';
+                });
+                
+                document.getElementById('dev-email-button').addEventListener('click', () => {
+                    window.location.href = 'mailto:hamadahmadbjr971@gmail.com';
+                });
+                
+                // Homepage register button
+                document.getElementById('homepage-register-button').addEventListener('click', function() {
+                    // Switch to the session tab
+                    document.querySelector('.nav-btn[data-tab="session"]').click();
+                    
+                    // Scroll to the session registration form after a short delay to allow tab switching
+                    setTimeout(() => {
+                        document.getElementById('session-registration-panel').scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                });
+                
+                // FAQ functionality
+                setupFAQ();
+                
+                // Notification close buttons
+                document.getElementById('success-close').addEventListener('click', closeSuccessNotification);
+                document.getElementById('error-close').addEventListener('click', closeErrorNotification);
+            }
+            
+            function setupFAQ() {
+                const faqItems = document.querySelectorAll('.faq-item');
+                
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question');
+                    
+                    question.addEventListener('click', () => {
+                        // Close all other FAQ items
+                        faqItems.forEach(otherItem => {
+                            if (otherItem !== item) {
+                                otherItem.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle current item
+                        item.classList.toggle('active');
+                    });
+                });
+            }
+            
+            function setupRegistrationForm() {
+                // --- Configuration ---
+                const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwRQxDrytuFisa-fbE3cLwfQL31q2-GDTFUWstsWtsT9X1GPg_zCXv1DhreQilqSRq_/exec';
+
+                document.getElementById('registrationForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Stop the default form submission
+
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    const statusMessage = document.getElementById('status-message');
+                    const submitButton = document.getElementById('submitButton');
+
+                    // --- Show Loading State ---
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                    statusMessage.style.display = 'none';
+
+                    // --- Send Data via Fetch API ---
+                    fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        // The Apps Script doPost returns a plain text response ("Success")
+                        return response.text(); 
+                    })
+                    .then(data => {
+                        // Check if the script returned "Success" (case-insensitive check)
+                        if (data.trim().toLowerCase() === 'success') {
+                            statusMessage.className = 'success';
+                            statusMessage.textContent = '✅ Success! Your registration is complete. Check your email for verification status.';
+                            form.reset(); // Clear the form on success
+                        } else {
+                            // Handle unexpected response from the server
+                            throw new Error('Server returned an unexpected response: ' + data);
+                        }
+                    })
+                    .catch(error => {
+                        // Handle network errors or errors thrown in the .then() block
+                        console.error('Submission Error:', error);
+                        statusMessage.className = 'error';
+                        statusMessage.textContent = '❌ An error occurred during submission. Please try again.';
+                    })
+                    .finally(() => {
+                        // --- Revert Button State ---
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Registration';
+                        statusMessage.style.display = 'block';
+                    });
+                });
+            }
+            
+            function showSuccessNotification() {
+                document.getElementById('notification-overlay').classList.add('active');
+                document.getElementById('success-notification').classList.add('active');
+            }
+            
+            function closeSuccessNotification() {
+                document.getElementById('notification-overlay').classList.remove('active');
+                document.getElementById('success-notification').classList.remove('active');
+            }
+            
+            function showErrorNotification() {
+                document.getElementById('notification-overlay').classList.add('active');
+                document.getElementById('error-notification').classList.add('active');
+            }
+            
+            function closeErrorNotification() {
+                document.getElementById('notification-overlay').classList.remove('active');
+                document.getElementById('error-notification').classList.remove('active');
+            }
+            
+            function toggleMenu() {
+                const menuToggle = document.getElementById('menu-toggle');
+                const mainNav = document.getElementById('main-nav');
+                
+                menuToggle.classList.toggle('active');
+                mainNav.classList.toggle('active');
+            }
+            
+            function toggleTheme() {
+                const themeToggle = document.getElementById('theme-toggle');
+                document.body.classList.toggle('dark-mode');
+                themeToggle.classList.toggle('dark');
+                saveToLocalStorage('darkMode', document.body.classList.contains('dark-mode'));
+            }
+            
+            function loadQuizzes() {
+                // Load all quizzes
+                const allContainer = document.getElementById('all-quizzes-container');
+                allContainer.innerHTML = '';
+                
+                quizzes.forEach(quiz => {
+                    const quizCard = createQuizCard(quiz);
+                    allContainer.appendChild(quizCard);
+                });
+                
+                // Load chemistry quizzes
+                const chemistryContainer = document.getElementById('chemistry-quizzes-container');
+                chemistryContainer.innerHTML = '';
+                
+                chemistryQuizzes.forEach(quiz => {
+                    const quizCard = createQuizCard(quiz);
+                    chemistryContainer.appendChild(quizCard);
+                });
+                
+                // Load biology quizzes
+                const biologyContainer = document.getElementById('biology-quizzes-container');
+                biologyContainer.innerHTML = '';
+                
+                biologyQuizzes.forEach(quiz => {
+                    const quizCard = createQuizCard(quiz);
+                    biologyContainer.appendChild(quizCard);
+                });
+                
+                // Load physics quizzes
+                const physicsContainer = document.getElementById('physics-quizzes-container');
+                physicsContainer.innerHTML = '';
+                
+                physicsQuizzes.forEach(quiz => {
+                    const quizCard = createQuizCard(quiz);
+                    physicsContainer.appendChild(quizCard);
+                });
+                
+                // Load english quizzes
+                const englishContainer = document.getElementById('english-quizzes-container');
+                englishContainer.innerHTML = '';
+                
+                englishQuizzes.forEach(quiz => {
+                    const quizCard = createQuizCard(quiz);
+                    englishContainer.appendChild(quizCard);
+                });
+                
+                // Load logical reasoning quizzes
+                const logicalContainer = document.getElementById('logical-quizzes-container');
+                logicalContainer.innerHTML = '';
+                
+                logicalQuizzes.forEach(quiz => {
+                    const quizCard = createQuizCard(quiz);
+                    logicalContainer.appendChild(quizCard);
+                });
+                
+                updateStats();
+            }
+            
+            function createQuizCard(quiz) {
+                const card = document.createElement('div');
+                card.className = 'card quiz-card fade-in';
+                
+                const passwordRequired = quiz.password !== "";
+                
+                card.innerHTML = `
+                    <div class="quiz-info">
+                        <div class="quiz-id">${quiz.id}</div>
+                        <div class="quiz-subject">${quiz.subject}</div>
+                        <div class="quiz-chapter">Chapter: ${quiz.chapter}</div>
+                        <div class="quiz-details">${quiz.questions} MCQs | ${quiz.time} minutes</div>
+                        <div class="quiz-details" style="color: var(--warning);"><i class="fas fa-lock"></i> Password Required</div>
+                    </div>
+                    <button class="start-btn" data-quiz-id="${quiz.id}" data-quiz-url="${quiz.url}">
+                        <i class="fas fa-play"></i> Start Quiz
+                    </button>
+                `;
+                
+                // Add event listener to the start button
+                const startBtn = card.querySelector('.start-btn');
+                startBtn.addEventListener('click', () => {
+                    // All quizzes now require password
+                    openPasswordModal(quiz);
+                });
+                
+                return card;
+            }
+            
+            function openPasswordModal(quiz) {
+                currentQuiz = quiz;
+                document.getElementById('password-modal').classList.add('active');
+                document.getElementById('quiz-password').value = '';
+                document.getElementById('password-error').style.display = 'none';
+                document.getElementById('quiz-password').focus();
+            }
+            
+            function closePasswordModal() {
+                document.getElementById('password-modal').classList.remove('active');
+                currentQuiz = null;
+            }
+            
+            function submitPassword() {
+                const passwordInput = document.getElementById('quiz-password');
+                const enteredPassword = passwordInput.value.trim();
+                const errorElement = document.getElementById('password-error');
+                
+                if (enteredPassword === currentQuiz.password) {
+                    // Password is correct, open the quiz URL
+                    window.open(currentQuiz.url, '_blank');
+                    closePasswordModal();
+                } else {
+                    // Password is incorrect
+                    errorElement.style.display = 'block';
+                    passwordInput.focus();
+                }
+            }
+            
+            function submitMasterPassword() {
+                const passwordInput = document.getElementById('master-password');
+                const enteredPassword = passwordInput.value.trim();
+                const errorElement = document.getElementById('master-password-error');
+                const accessForm = document.getElementById('password-access-form');
+                const tableContainer = document.getElementById('password-table-container');
+                
+                if (enteredPassword === "Dr Hamad Manduri") {
+                    // Password is correct, show the password list
+                    accessForm.style.display = 'none';
+                    tableContainer.style.display = 'block';
+                    
+                    // Populate the password table
+                    const tableBody = document.getElementById('password-table-body');
+                    tableBody.innerHTML = '';
+                    
+                    // Sort quizzes by subject and chapter
+                    const sortedQuizzes = [...quizzes].sort((a, b) => {
+                        if (a.subject !== b.subject) {
+                            return a.subject.localeCompare(b.subject);
+                        }
+                        return a.chapter.localeCompare(b.chapter);
+                    });
+                    
+                    // Add quizzes to table
+                    sortedQuizzes.forEach(quiz => {
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                            <td>${quiz.subject}</td>
+                            <td>${quiz.chapter}</td>
+                            <td>${quiz.id}</td>
+                            <td>${quiz.password}</td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    // Password is incorrect
+                    errorElement.style.display = 'block';
+                    passwordInput.focus();
+                }
+            }
+            
+            function updateStats() {
+                document.getElementById('chemistry-quizzes').textContent = chemistryQuizzes.length;
+                document.getElementById('biology-quizzes').textContent = biologyQuizzes.length;
+                document.getElementById('physics-quizzes').textContent = physicsQuizzes.length;
+                document.getElementById('english-quizzes').textContent = englishQuizzes.length;
+                document.getElementById('logical-quizzes').textContent = logicalQuizzes.length;
+            }
+            
+            function applyAnimations() {
+                const elements = document.querySelectorAll('.panel, .card, .nav-btn');
+                
+                elements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.classList.add('fade-in');
+                    }, index * 50);
+                });
+            }
+            
+            function saveToLocalStorage(key, value) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                } catch (e) {
+                    console.error('Error saving to localStorage:', e);
+                }
+            }
+            
+            function getFromLocalStorage(key) {
+                try {
+                    const value = localStorage.getItem(key);
+                    return value ? JSON.parse(value) : null;
+                } catch (e) {
+                    console.error('Error reading from localStorage:', e);
+                    return null;
+                }
+            }
+            
+            // Load dark mode setting
+            const darkMode = getFromLocalStorage('darkMode');
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-toggle').classList.add('dark');
+            }
+        });
+    </script>
+</body>
+</html>
